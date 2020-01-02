@@ -1,12 +1,28 @@
 import { createGlobalStyle } from 'styled-components';
 
+export const CenteredFlexBase = `
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const CenteredFlexRow = `
+    ${CenteredFlexBase}
+    flex-direction: row;
+`;
+
+export const CenteredFlexColumn = `
+    ${CenteredFlexBase}
+    flex-direction: column;
+`;
+
 export default createGlobalStyle`
     * {
         margin: 0;
         padding: 0;
     }
 
-    html, body, #root {
+    html, body, #shaman_container {
         height: 100vh;
         box-sizing: border-box;
         font-size: 62.5%;

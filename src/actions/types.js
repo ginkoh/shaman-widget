@@ -1,1 +1,2 @@
 export const EXAMPLE_ACTION = 'EXAMPLE_ACTION';
+export const SET_CHAT_VISIBLE = 'SET_CHAT_VISIBLE';
