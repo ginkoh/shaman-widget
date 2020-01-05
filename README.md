@@ -1,68 +1,62 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# shaman-widget
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `yarn start`
+## Tips
+- Checar XHR's e Websocket messages do Intercom (weblink) e do User Engage (hotelflow);
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
-### `yarn test`
+## **Requests**
+- Widget deve fazer nenhum request ao ser fechado e aberto novamente;
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## **WebSocket**
+- Os websockets tem de serem reconectáveis:
+`https://github.com/websockets/ws/wiki/Websocket-client-implementation-for-auto-reconnect`;
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- Os websockets tem de ter fallback para long pooling (o server tem que estar preparado para isso)?;
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Os consumers do django cuidam da parte dos dados;
 
-### `yarn eject`
+- O `id` do websocket é manuseado pela lista de `websocket_urlpatterns` no arquivo de routing. O `room_id` é enviado 
+pela URL na hora em que os fronts fazem request para um websocket novo/existente.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```Python
+(re_path(r'ws/chat/(?P<room_id>\w+)/$', consumers.ChatConsumer))
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## **Application Experience Roadmap**
+`$example = hotelflow|website|any_other_system`
+`$last_messages_count = 10`
 
-## Learn More
+- Cliente do sistema ($example) abre o sistema ($example);
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- O widget é carregado;
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- O front dispara uma requisição de um novo websocket, com o `room_id aleatório ou baseado na sessão do usuário?`;
 
-### Code Splitting
+- O server checa se a chamada para esse novo websocket é válida (room_id válido (como validar?));
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- Usuário clica no widget;
 
-### Analyzing the Bundle Size
+- O widget expande e:
+    - Mostra o nome do $example;
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+    - Mostra a descrição;
 
-### Making a Progressive Web App
+    - Mostra os agents;
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+    - Chama o endpoint de `conversations`. Esse endpoint entrega todos os `chat_conversations` em que o usuário (regis
+    trado no $example) está atrelado. No widget, uma lista com o preview de todos esses `chat_conversations` é mostrada. 
+    Pra cada um deles, é feito um fetch (/chat/conversation_id/messages) da última mensagem de cada, que é a que será 
+    mostrada no preview (ou é feito um fetch de $last_messages_count mensagens, que possibilita um acesso mais rápido a 
+    cada chat individual ao abri-lo);
 
-### Advanced Configuration
+    - Mostra um botão para o usuário poder iniciar uma nova conversa com um operator escolhido aleatóriamente;
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+    - Ao clicar em uma conversa, é feito fetch das $last_messages_count e mostradas na conversa. A conversa dá um editor
+    de textos para o usuário escrever
