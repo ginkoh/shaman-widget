@@ -1,14 +1,16 @@
+// Constants.
 import * as TYPES from '../actions/types';
+import { possibleStates } from '../constants/app';
 
 const initialState = {
-    isVisible: true,
+    currentStage: possibleStates.lobby,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case TYPES.SET_CHAT_VISIBLE:
+    case TYPES.SET_APP_STAGE:
       return {
-        isVisible: !state.isVisible
+        currentStage: action.payload.currentStage
       };
     default:
       return state;
