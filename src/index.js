@@ -9,8 +9,9 @@ import store from "./store";
 // Custom Containers.
 import App from "./containers/App";
 
-// Styles.
+// Styles and CSS.
 import GlobalStyle from "./utils/globals";
+import 'antd/dist/antd.css';
 
 // Service Workers.
 import * as serviceWorker from "./serviceWorker";
