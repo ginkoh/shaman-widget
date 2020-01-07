@@ -25,7 +25,6 @@ export default createGlobalStyle`
     html, body, #shaman_container {
         height: 100vh;
         box-sizing: border-box;
-        font-size: 62.5%;
     }
 
     body {
