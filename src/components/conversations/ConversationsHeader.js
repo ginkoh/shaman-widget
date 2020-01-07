@@ -10,9 +10,6 @@ import styled from "styled-components";
 // FontAwesome.
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// Utils.
-import { CenteredFlexRow } from "../../utils/globals";
-
 // Actions.
 import { setChatVisible } from "../../actions";
 
@@ -28,7 +25,12 @@ const Container = styled.div`
   min-height: 60px;
 
   background: ${LIGHT_GREEN};
-  color: ${WHITE}
+  color: ${WHITE};
+
+  margin-bottom: 10px;
+
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 `;
 
 const HeaderContent = styled.div`
@@ -54,6 +56,8 @@ function ConversationsHeader({
   // Connected props.
   isVisible,
 
+  // Regular props.
+  responsiveMode,
   agentsList,
 
   // Dispatchers.
@@ -89,7 +93,7 @@ function ConversationsHeader({
     <Container>
       <HeaderContent>
         <div>
-          <h1>Site name</h1>
+          <h1 style={{ color: "#fff" }}>hotelflow</h1>
         </div>
         <div>
           <span>Alguma questão? Fale conosco!</span>
@@ -103,7 +107,7 @@ function ConversationsHeader({
               listStyleType: "none"
             }}
           >
-            {agentsList.slice(0, 5).map((agent, i) => (
+            {/* {agentsList.slice(0, 5).map((agent, i) => (
               <li key={i} style={{ margin: "5px", cursor: 'pointer' }} onClick={setChatVisible}>
                 <AgentImage
                   src={agent.picture}
@@ -114,13 +118,19 @@ function ConversationsHeader({
             ))}
             <li>
               <AgentImage src="https://images-na.ssl-images-amazon.com/images/I/412rXWdCJ7L.png"></AgentImage>
-            </li>
+            </li> */}
           </ul>
         </div>
       </HeaderContent>
-      <CloseButton onClick={setChatVisible}>
-        <FontAwesomeIcon icon="times" size="2x" style={{ cursor: "pointer" }} />
-      </CloseButton>
+      {responsiveMode && (
+        <CloseButton onClick={setChatVisible}>
+          <FontAwesomeIcon
+            icon="times"
+            size="2x"
+            style={{ cursor: "pointer" }}
+          />
+        </CloseButton>
+      )}
     </Container>
   );
 }

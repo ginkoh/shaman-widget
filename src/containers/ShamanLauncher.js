@@ -17,7 +17,7 @@ import { CenteredFlexRow } from "../utils/globals";
 import { WHITE, LIGHT_GREEN } from "../constants/colors";
 
 // Custom Containers.
-import ShamanConversations from "./ShamanConversations";
+import ShamanMainApplication from "./ShamanMainApplication";
 
 // Actions.
 import { setChatVisible } from "../actions";
@@ -46,31 +46,58 @@ const StyledLauncher = styled.div`
   }
 `;
 
+const OpenableLauncher = ({
+  isVisible,
+  handleChatVisible,
+  shamanLauncherRef
+}) => (
+  <StyledLauncher
+    onClick={handleChatVisible}
+    ref={shamanLauncherRef}
+    style={{ transition: "opacity 1s ease-out" }}
+  >
+    <FontAwesomeIcon
+      icon={isVisible ? "times" : "comments"}
+      style={{
+        color: WHITE
+      }}
+    ></FontAwesomeIcon>
+  </StyledLauncher>
+);
+
 function ShamanLauncher({
   // Connected props.
   isVisible,
+
+  // Regular props.
+  responsiveMode,
 
   // Dispatchers.
   setChatVisible
 }) {
   const shamanLauncherRef = useRef();
+
   function handleChatVisible() {
-    shamanLauncherRef.current.style.transition = 'opacity 1s ease-out';
+    shamanLauncherRef.current.style.transition = "opacity 1s ease-out";
     //  console.log('ops', shamanLauncherRef.current.style)
     setChatVisible();
   }
+
   return !isVisible ? (
-    <StyledLauncher onClick={handleChatVisible} ref={shamanLauncherRef} style={{transition: 'opacity 1s ease-out'}}>
-      <FontAwesomeIcon
-        icon="comments"
-        size="2x"
-        style={{
-          color: WHITE
-        }}
-      ></FontAwesomeIcon>
-    </StyledLauncher>
+    <OpenableLauncher
+      isVisible={isVisible}
+      handleChatVisible={handleChatVisible}
+      shamanLauncherRef={shamanLauncherRef}
+    />
   ) : (
-    <ShamanConversations />
+    <React.Fragment>
+      <OpenableLauncher
+        isVisible={isVisible}
+        handleChatVisible={handleChatVisible}
+        shamanLauncherRef={shamanLauncherRef}
+      />
+      <ShamanMainApplication responsiveMode={responsiveMode} />
+    </React.Fragment>
   );
 }
 

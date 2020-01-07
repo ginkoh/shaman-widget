@@ -26,8 +26,9 @@ library.add(fab, fas, far);
  */
 
 const App = () => {
+  const responsiveMode = window.innerWidth <= 600;
   return (
-    <ShamanLauncher />
+    <ShamanLauncher responsiveMode={responsiveMode} />
     // <MemoryRouter>
     //   <Switch>
     //     <Route exact path="/" component={ShamanLauncher} />
