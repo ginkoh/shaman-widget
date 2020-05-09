@@ -1,23 +1,17 @@
 // React.
-import React from "react";
+import React, { useCallback } from "react";
 
 // Redux.
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 
-// Styled Components.
+// Third party.
 import styled from "styled-components";
-
-// FontAwesome.
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Utils.
 import { CenteredFlexRow } from "../../utils/globals";
-
-// Actions.
-import { setChatVisible } from "../../actions";
-
-// Constants.
 import { LIGHT_GREEN, WHITE } from "../../constants/colors";
+import * as TYPES from '../../constants/actionTypes';
 
 const Container = styled.div`
   display: flex;
@@ -51,14 +45,11 @@ const AgentImage = styled.img`
 // TODO: Get site name, description and agents from API.
 // Also: Get navigator language and save i18n strings on the server.
 function ConversationsHeader({
-  // Connected props.
-  isVisible,
-
   agentsList,
-
-  // Dispatchers.
-  setChatVisible
 }) {
+  const dispatch = useDispatch();
+  const setChatVisible = useCallback(() => dispatch({ type: TYPES.SET_CHAT_VISIBLE }), [dispatch]);
+
   agentsList = [
     {
       name: "Gian",
@@ -125,19 +116,4 @@ function ConversationsHeader({
   );
 }
 
-const mapStateToProps = ({ conversations }) => {
-  return {
-    isVisible: conversations.isVisible
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setChatVisible: () => dispatch(setChatVisible())
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ConversationsHeader);
+export default ConversationsHeader;

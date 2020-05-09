@@ -1,26 +1,20 @@
 // React.
-import React, { useRef } from "react";
+import React, { useRef, useCallback } from "react";
 
 // Redux.
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import * as TYPES from '../constants/actionTypes';
 
-// Styled Components.
+// Third party.
 import styled from "styled-components";
-
-// FontAwesome.
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Utils.
 import { CenteredFlexRow } from "../utils/globals";
-
-// Constants.
 import { WHITE, LIGHT_GREEN } from "../constants/colors";
 
 // Custom Containers.
 import ShamanConversations from "./ShamanConversations";
-
-// Actions.
-import { setChatVisible } from "../actions";
 
 const StyledLauncher = styled.div`
   position: fixed;
@@ -46,21 +40,21 @@ const StyledLauncher = styled.div`
   }
 `;
 
-function ShamanLauncher({
-  // Connected props.
-  isVisible,
-
-  // Dispatchers.
-  setChatVisible
-}) {
+function ShamanLauncher() {
   const shamanLauncherRef = useRef();
+
+  const { isVisible } = useSelector(state => state.conversations);
+  const dispatch = useDispatch();
+  const setChatVisible = useCallback(() => dispatch({ type: TYPES.SET_CHAT_VISIBLE }), [dispatch]);
+
   function handleChatVisible() {
     shamanLauncherRef.current.style.transition = 'opacity 1s ease-out';
     //  console.log('ops', shamanLauncherRef.current.style)
     setChatVisible();
   }
+
   return !isVisible ? (
-    <StyledLauncher onClick={handleChatVisible} ref={shamanLauncherRef} style={{transition: 'opacity 1s ease-out'}}>
+    <StyledLauncher onClick={handleChatVisible} ref={shamanLauncherRef} style={{ transition: 'opacity 1s ease-out' }}>
       <FontAwesomeIcon
         icon="comments"
         size="2x"
@@ -70,17 +64,8 @@ function ShamanLauncher({
       ></FontAwesomeIcon>
     </StyledLauncher>
   ) : (
-    <ShamanConversations />
-  );
+      <ShamanConversations />
+    );
 }
 
-export default connect(
-  // mapStateToPRops.
-  ({ conversations }) => ({ isVisible: conversations.isVisible }),
-  // mapDispatchToProps.
-  dispatch => {
-    return {
-      setChatVisible: () => dispatch(setChatVisible())
-    };
-  }
-)(ShamanLauncher);
+export default ShamanLauncher;

@@ -9,7 +9,7 @@ function ShamanChat() {
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch("http://localhost:8000/chat/messages/");
